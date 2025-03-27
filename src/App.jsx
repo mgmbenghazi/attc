@@ -25,6 +25,7 @@ import Dashboard from './pages/admin/Dashboard';
 import Login from './pages/admin/Login';
 import DashboardHome from './pages/admin/DashboardHome';
 import HomePageEditor from './pages/admin/HomePageEditor';
+import ClientBriefs from './pages/admin/ClientBriefs';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -85,15 +86,19 @@ function App() {
             </ProtectedRoute>
           }>
             <Route index element={<DashboardHome />} />
-            {/* Add more admin routes here as nested routes */}
             <Route path="home-page" element={<HomePageEditor />} />
             <Route path="about" element={<div>About Page Editor</div>} />
             <Route path="services" element={<div>Services Editor</div>} />
             <Route path="projects" element={<div>Projects Editor</div>} />
             <Route path="blog" element={<div>Blog Editor</div>} />
             <Route path="careers" element={<div>Careers Editor</div>} />
-            <Route path="client-briefs" element={<div>Client Briefs</div>} />
+            <Route path="client-briefs" element={<ClientBriefs />} />
             <Route path="settings" element={<div>Settings</div>} />
+            
+            {/* Add routes for creating new items */}
+            <Route path="projects/new" element={<div>New Project</div>} />
+            <Route path="services/new" element={<div>New Service</div>} />
+            <Route path="blog/new" element={<div>New Blog Post</div>} />
           </Route>
           
           {/* 404 Route */}

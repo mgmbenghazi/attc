@@ -1,149 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { contentService } from '../../services/api';
 
 const HomePageEditor = () => {
-  // Mock data for the home page content
   const [heroSection, setHeroSection] = useState({
     title: {
-      en: 'Leading IT & Telecom Solutions in Libya',
-      ar: 'حلول تكنولوجيا المعلومات والاتصالات الرائدة في ليبيا'
+      en: '',
+      ar: ''
     },
     subtitle: {
-      en: 'Providing innovative technology solutions for businesses across Libya',
-      ar: 'تقديم حلول تكنولوجية مبتكرة للشركات في جميع أنحاء ليبيا'
+      en: '',
+      ar: ''
     },
     buttonText: {
-      en: 'Get Started',
-      ar: 'ابدأ الآن'
+      en: '',
+      ar: ''
     },
-    backgroundImage: '/images/hero-background.jpg'
+    backgroundImage: ''
   });
 
   const [aboutSection, setAboutSection] = useState({
     title: {
-      en: 'About ElAmir',
-      ar: 'عن الأمير'
+      en: '',
+      ar: ''
     },
     content: {
-      en: 'ElAmir for IT and Telecom is a leading technology company based in Libya, providing comprehensive IT and telecommunications solutions to businesses and organizations across the country.',
-      ar: 'شركة الأمير لتكنولوجيا المعلومات والاتصالات هي شركة تكنولوجيا رائدة مقرها ليبيا، وتقدم حلولاً شاملة لتكنولوجيا المعلومات والاتصالات للشركات والمؤسسات في جميع أنحاء البلاد.'
+      en: '',
+      ar: ''
     },
-    image: '/images/about-image.jpg',
-    stats: [
-      {
-        value: '10+',
-        label: {
-          en: 'Years Experience',
-          ar: 'سنوات الخبرة'
-        }
-      },
-      {
-        value: '200+',
-        label: {
-          en: 'Projects Completed',
-          ar: 'المشاريع المنجزة'
-        }
-      },
-      {
-        value: '50+',
-        label: {
-          en: 'Team Members',
-          ar: 'أعضاء الفريق'
-        }
-      },
-      {
-        value: '100+',
-        label: {
-          en: 'Happy Clients',
-          ar: 'عملاء سعداء'
-        }
-      }
-    ]
+    image: '',
+    stats: []
   });
 
   const [servicesSection, setServicesSection] = useState({
     title: {
-      en: 'Our Services',
-      ar: 'خدماتنا'
+      en: '',
+      ar: ''
     },
     subtitle: {
-      en: 'Comprehensive IT and Telecom Solutions',
-      ar: 'حلول شاملة لتكنولوجيا المعلومات والاتصالات'
+      en: '',
+      ar: ''
     },
-    services: [
-      {
-        id: 1,
-        title: {
-          en: 'IT Infrastructure',
-          ar: 'البنية التحتية لتكنولوجيا المعلومات'
-        },
-        description: {
-          en: 'Design and implementation of robust IT infrastructure solutions.',
-          ar: 'تصميم وتنفيذ حلول قوية للبنية التحتية لتكنولوجيا المعلومات.'
-        },
-        icon: 'server'
-      },
-      {
-        id: 2,
-        title: {
-          en: 'Telecommunications',
-          ar: 'الاتصالات'
-        },
-        description: {
-          en: 'Advanced telecommunications systems for business needs.',
-          ar: 'أنظمة اتصالات متقدمة لاحتياجات الأعمال.'
-        },
-        icon: 'phone'
-      },
-      {
-        id: 3,
-        title: {
-          en: 'Networking',
-          ar: 'الشبكات'
-        },
-        description: {
-          en: 'Secure and efficient networking solutions for your organization.',
-          ar: 'حلول شبكات آمنة وفعالة لمؤسستك.'
-        },
-        icon: 'network'
-      },
-      {
-        id: 4,
-        title: {
-          en: 'Security Systems',
-          ar: 'أنظمة الأمان'
-        },
-        description: {
-          en: 'Comprehensive security systems to protect your business.',
-          ar: 'أنظمة أمان شاملة لحماية عملك.'
-        },
-        icon: 'shield'
-      },
-      {
-        id: 5,
-        title: {
-          en: 'Software Development',
-          ar: 'تطوير البرمجيات'
-        },
-        description: {
-          en: 'Custom software solutions tailored to your business needs.',
-          ar: 'حلول برمجية مخصصة مصممة لتلبية احتياجات عملك.'
-        },
-        icon: 'code'
-      },
-      {
-        id: 6,
-        title: {
-          en: 'Consulting Services',
-          ar: 'خدمات الاستشارات'
-        },
-        description: {
-          en: 'Expert IT consulting to help you make the right technology decisions.',
-          ar: 'استشارات تكنولوجيا المعلومات الخبيرة لمساعدتك في اتخاذ القرارات التكنولوجية الصحيحة.'
-        },
-        icon: 'chat'
-      }
-    ]
+    services: []
   });
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  // Fetch home page content
+  useEffect(() => {
+    const fetchHomeContent = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const data = await contentService.getHomeContent();
+        
+        // Update state with fetched data
+        if (data.hero) setHeroSection(data.hero);
+        if (data.about) setAboutSection(data.about);
+        if (data.services) {
+          setServicesSection({
+            title: data.services.title || { en: '', ar: '' },
+            subtitle: data.services.subtitle || { en: '', ar: '' },
+            services: data.services.items || []
+          });
+        }
+      } catch (err) {
+        console.error('Error fetching home page content:', err);
+        setError('Failed to load home page content. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchHomeContent();
+  }, []);
 
   // Handle hero section changes
   const handleHeroChange = (field, language, value) => {
@@ -185,12 +118,79 @@ const HomePageEditor = () => {
     }));
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // In a real application, this would save the data to a database or API
-    alert('Changes saved successfully!');
+  // Add a new service
+  const handleAddService = () => {
+    const newService = {
+      id: Date.now(), // Temporary ID for new service
+      title: {
+        en: 'New Service',
+        ar: 'خدمة جديدة'
+      },
+      description: {
+        en: 'Description of the new service',
+        ar: 'وصف الخدمة الجديدة'
+      },
+      icon: 'server'
+    };
+    
+    setServicesSection(prev => ({
+      ...prev,
+      services: [...prev.services, newService]
+    }));
   };
+
+  // Remove a service
+  const handleRemoveService = (serviceId) => {
+    setServicesSection(prev => ({
+      ...prev,
+      services: prev.services.filter(service => service.id !== serviceId)
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSaving(true);
+    setError(null);
+    setSuccessMessage(null);
+    
+    try {
+      // Prepare data for API
+      const homeContent = {
+        hero: heroSection,
+        about: aboutSection,
+        services: {
+          title: servicesSection.title,
+          subtitle: servicesSection.subtitle,
+          items: servicesSection.services
+        }
+      };
+      
+      // Save to API
+      await contentService.updateHomeContent(homeContent);
+      
+      // Show success message
+      setSuccessMessage('Changes saved successfully!');
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
+    } catch (err) {
+      console.error('Error saving home page content:', err);
+      setError('Failed to save changes. Please try again later.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -198,11 +198,52 @@ const HomePageEditor = () => {
         <h1 className="text-2xl font-bold text-gray-900">Home Page Editor</h1>
         <button 
           onClick={handleSubmit}
-          className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          disabled={isSaving}
+          className={`px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-70 ${
+            isSaving ? 'cursor-not-allowed' : ''
+          }`}
         >
-          Save Changes
+          {isSaving ? (
+            <span className="flex items-center">
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Saving...
+            </span>
+          ) : 'Save Changes'}
         </button>
       </div>
+
+      {error && (
+        <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-green-700">{successMessage}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Hero Section</h2>
@@ -366,9 +407,85 @@ const HomePageEditor = () => {
       <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900">Services Section</h2>
-          <button className="px-3 py-1 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm">
+          <button 
+            onClick={handleAddService}
+            className="px-3 py-1 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm"
+          >
             Add Service
           </button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Section Title (English)
+            </label>
+            <input
+              type="text"
+              value={servicesSection.title.en}
+              onChange={(e) => setServicesSection(prev => ({
+                ...prev,
+                title: {
+                  ...prev.title,
+                  en: e.target.value
+                }
+              }))}
+              className="form-input"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Section Title (Arabic)
+            </label>
+            <input
+              type="text"
+              value={servicesSection.title.ar}
+              onChange={(e) => setServicesSection(prev => ({
+                ...prev,
+                title: {
+                  ...prev.title,
+                  ar: e.target.value
+                }
+              }))}
+              className="form-input text-right"
+              dir="rtl"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Section Subtitle (English)
+            </label>
+            <input
+              type="text"
+              value={servicesSection.subtitle.en}
+              onChange={(e) => setServicesSection(prev => ({
+                ...prev,
+                subtitle: {
+                  ...prev.subtitle,
+                  en: e.target.value
+                }
+              }))}
+              className="form-input"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Section Subtitle (Arabic)
+            </label>
+            <input
+              type="text"
+              value={servicesSection.subtitle.ar}
+              onChange={(e) => setServicesSection(prev => ({
+                ...prev,
+                subtitle: {
+                  ...prev.subtitle,
+                  ar: e.target.value
+                }
+              }))}
+              className="form-input text-right"
+              dir="rtl"
+            />
+          </div>
         </div>
         
         <div className="space-y-6">
@@ -376,7 +493,10 @@ const HomePageEditor = () => {
             <div key={service.id} className="border border-gray-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-medium text-gray-900">Service #{service.id}</h3>
-                <button className="text-red-600 hover:text-red-800">
+                <button 
+                  onClick={() => handleRemoveService(service.id)}
+                  className="text-red-600 hover:text-red-800"
+                >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                   </svg>
@@ -452,6 +572,27 @@ const HomePageEditor = () => {
                     <option value="code">Code</option>
                     <option value="chat">Chat</option>
                   </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Featured
+                  </label>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={service.featured || false}
+                      onChange={(e) => setServicesSection(prev => ({
+                        ...prev,
+                        services: prev.services.map(s => 
+                          s.id === service.id 
+                            ? { ...s, featured: e.target.checked } 
+                            : s
+                        )
+                      }))}
+                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Show on homepage</span>
+                  </div>
                 </div>
               </div>
             </div>

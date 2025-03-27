@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,26 +28,26 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      // In a real application, you would make an API call to authenticate
-      // For demo purposes, we'll use a simple check
-      if (formData.email === 'admin@attc.ly' && formData.password === 'admin123') {
-        // Store authentication token
-        localStorage.setItem('adminToken', 'demo-token-12345');
-        
-        // Store user info if remember me is checked
-        if (formData.rememberMe) {
-          localStorage.setItem('adminEmail', formData.email);
-        } else {
-          localStorage.removeItem('adminEmail');
-        }
-        
-        // Redirect to dashboard
-        navigate('/admin/dashboard');
+      // Use the auth service to login
+      const result = await authService.login({
+        email: formData.email,
+        password: formData.password
+      });
+      
+      // Store authentication token
+      localStorage.setItem('adminToken', result.token);
+      
+      // Store user info if remember me is checked
+      if (formData.rememberMe) {
+        localStorage.setItem('adminEmail', formData.email);
       } else {
-        setError('Invalid email or password');
+        localStorage.removeItem('adminEmail');
       }
+      
+      // Redirect to dashboard
+      navigate('/admin/dashboard');
     } catch (err) {
-      setError('An error occurred during login. Please try again.');
+      setError(err.message || 'Invalid email or password');
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);
@@ -54,7 +55,7 @@ const Login = () => {
   };
 
   // Check for saved email on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     const savedEmail = localStorage.getItem('adminEmail');
     if (savedEmail) {
       setFormData(prev => ({

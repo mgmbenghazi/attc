@@ -72,33 +72,75 @@ const ClientBrief = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // In a real application, this would be an API call to submit the form
-    // For now, we'll simulate a successful submission
+    // Set loading state
     setFormStatus({
-      submitted: true,
-      success: true,
-      message: t('clientBrief.form.success')
+      submitted: false,
+      success: false,
+      message: ''
     });
-
-    // Reset form after successful submission
-    setFormData({
-      companyName: '',
-      industry: '',
-      contactName: '',
-      email: '',
-      phone: '',
-      projectType: '',
-      projectDescription: '',
-      currentChallenges: '',
-      goals: '',
-      timeline: '',
-      budget: '',
-      additionalInfo: '',
-      attachments: null
-    });
+    
+    try {
+      // In development, just log the data
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Submitting client brief:', formData);
+        
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Show success message
+        setFormStatus({
+          submitted: true,
+          success: true,
+          message: t('clientBrief.form.success')
+        });
+      } else {
+        // In production, send to API
+        const response = await fetch('/api/client-briefs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to submit client brief');
+        }
+        
+        setFormStatus({
+          submitted: true,
+          success: true,
+          message: t('clientBrief.form.success')
+        });
+      }
+      
+      // Reset form after successful submission
+      setFormData({
+        companyName: '',
+        industry: '',
+        contactName: '',
+        email: '',
+        phone: '',
+        projectType: '',
+        projectDescription: '',
+        currentChallenges: '',
+        goals: '',
+        timeline: '',
+        budget: '',
+        additionalInfo: '',
+        attachments: null
+      });
+    } catch (error) {
+      console.error('Error submitting client brief:', error);
+      setFormStatus({
+        submitted: true,
+        success: false,
+        message: t('clientBrief.form.error')
+      });
+    }
   };
 
   return (

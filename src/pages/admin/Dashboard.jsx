@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { authService } from '../../services/api';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ const Dashboard = () => {
       )
     },
     { 
-      path: '/admin/home-page', 
+      path: '/admin/dashboard/home-page', 
       label: 'Home Page', 
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +35,7 @@ const Dashboard = () => {
       )
     },
     { 
-      path: '/admin/about', 
+      path: '/admin/dashboard/about', 
       label: 'About Us', 
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -43,7 +44,7 @@ const Dashboard = () => {
       )
     },
     { 
-      path: '/admin/services', 
+      path: '/admin/dashboard/services', 
       label: 'Services', 
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -53,7 +54,7 @@ const Dashboard = () => {
       )
     },
     { 
-      path: '/admin/projects', 
+      path: '/admin/dashboard/projects', 
       label: 'Projects', 
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +63,7 @@ const Dashboard = () => {
       )
     },
     { 
-      path: '/admin/blog', 
+      path: '/admin/dashboard/blog', 
       label: 'Blog', 
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -71,7 +72,7 @@ const Dashboard = () => {
       )
     },
     { 
-      path: '/admin/careers', 
+      path: '/admin/dashboard/careers', 
       label: 'Careers', 
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -80,7 +81,7 @@ const Dashboard = () => {
       )
     },
     { 
-      path: '/admin/client-briefs', 
+      path: '/admin/dashboard/client-briefs', 
       label: 'Client Briefs', 
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +90,7 @@ const Dashboard = () => {
       )
     },
     { 
-      path: '/admin/settings', 
+      path: '/admin/dashboard/settings', 
       label: 'Settings', 
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -102,8 +103,8 @@ const Dashboard = () => {
 
   // Handle logout
   const handleLogout = () => {
-    // Clear authentication token or session
-    localStorage.removeItem('adminToken');
+    // Use the auth service to logout
+    authService.logout();
     // Redirect to login page
     navigate('/admin/login');
   };
