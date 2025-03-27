@@ -1,0 +1,484 @@
+{
+  "meta": {
+    "title": "ElAmir for IT and Telecom",
+    "description": "Leading technology company in Libya providing IT infrastructure, telecommunications, networking, security systems, software development, consulting, and maintenance services."
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "projects": "Projects",
+    "careers": "Careers",
+    "clientBrief": "Client Brief",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "buttons": {
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "getInTouch": "Get in Touch",
+    "submitApplication": "Submit Application",
+    "submitBrief": "Submit Brief",
+    "sendMessage": "Send Message",
+    "downloadBrochure": "Download Brochure",
+    "applyNow": "Apply Now",
+    "learnMore": "Learn More",
+    "viewProject": "View Project",
+    "requestQuote": "Request a Quote"
+  },
+  "home": {
+    "hero": {
+      "title": "Leading IT & Telecom Solutions in Libya",
+      "subtitle": "Innovative technology solutions for businesses of all sizes",
+      "cta": "Discover Our Services"
+    },
+    "about": {
+      "title": "About ElAmir",
+      "content": "ElAmir for IT and Telecom is a leading technology company in Libya, providing comprehensive IT and telecommunications solutions to businesses and organizations across the country. With years of experience and a team of skilled professionals, we deliver innovative and reliable services tailored to meet our clients' specific needs."
+    },
+    "services": {
+      "title": "Our Services",
+      "subtitle": "Comprehensive IT & Telecom Solutions",
+      "itInfrastructure": {
+        "title": "IT Infrastructure",
+        "description": "Design, implementation, and maintenance of robust IT infrastructure solutions."
+      },
+      "telecommunications": {
+        "title": "Telecommunications",
+        "description": "Advanced telecommunications systems for reliable and efficient communication."
+      },
+      "networking": {
+        "title": "Networking",
+        "description": "Secure and scalable network solutions for businesses of all sizes."
+      },
+      "securitySystems": {
+        "title": "Security Systems",
+        "description": "Comprehensive security solutions to protect your business assets."
+      },
+      "softwareDevelopment": {
+        "title": "Software Development",
+        "description": "Custom software solutions tailored to your specific business needs."
+      },
+      "consulting": {
+        "title": "Consulting Services",
+        "description": "Expert advice and guidance on technology strategy and implementation."
+      },
+      "support": {
+        "title": "Support & Maintenance",
+        "description": "Ongoing support and maintenance to ensure optimal system performance."
+      }
+    },
+    "projects": {
+      "title": "Featured Projects",
+      "subtitle": "Our Recent Success Stories"
+    },
+    "testimonials": {
+      "title": "Client Testimonials",
+      "subtitle": "What Our Clients Say About Us"
+    },
+    "stats": {
+      "title": "Our Impact",
+      "yearsInBusiness": "Years in Business",
+      "projectsCompleted": "Projects Completed",
+      "clientsServed": "Clients Served",
+      "teamMembers": "Team Members"
+    },
+    "cta": {
+      "title": "Ready to Transform Your Business?",
+      "subtitle": "Contact us today to discuss your technology needs and how we can help you achieve your goals.",
+      "button": "Get Started"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "About ElAmir for IT and Telecom",
+      "subtitle": "Your Trusted Technology Partner in Libya"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "content": "To provide innovative and reliable IT and telecommunications solutions that empower businesses and organizations in Libya to achieve their goals and drive growth."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "content": "To be the leading provider of technology solutions in Libya, recognized for our expertise, reliability, and commitment to excellence."
+    },
+    "values": {
+      "title": "Our Values",
+      "innovation": {
+        "title": "Innovation",
+        "description": "We continuously seek new and better ways to solve problems and deliver value to our clients."
+      },
+      "excellence": {
+        "title": "Excellence",
+        "description": "We strive for excellence in everything we do, from the solutions we provide to the service we deliver."
+      },
+      "integrity": {
+        "title": "Integrity",
+        "description": "We conduct our business with honesty, transparency, and ethical standards."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "We work closely with our clients and partners to achieve shared goals and mutual success."
+      },
+      "customerFocus": {
+        "title": "Customer Focus",
+        "description": "We put our clients at the center of everything we do, understanding their needs and exceeding their expectations."
+      }
+    },
+    "team": {
+      "title": "Our Team",
+      "subtitle": "Meet the Experts Behind Our Success"
+    },
+    "history": {
+      "title": "Our History",
+      "subtitle": "The Journey of ElAmir for IT and Telecom"
+    },
+    "partners": {
+      "title": "Our Partners",
+      "subtitle": "Working Together to Deliver Excellence"
+    }
+  },
+  "services": {
+    "hero": {
+      "title": "Our Services",
+      "subtitle": "Comprehensive IT & Telecom Solutions"
+    },
+    "itInfrastructure": {
+      "title": "IT Infrastructure",
+      "description": "We design, implement, and maintain robust IT infrastructure solutions that provide the foundation for your business operations.",
+      "features": [
+        "Server and storage solutions",
+        "Virtualization",
+        "Cloud infrastructure",
+        "Data center design and management",
+        "Disaster recovery and business continuity"
+      ]
+    },
+    "telecommunications": {
+      "title": "Telecommunications",
+      "description": "Our telecommunications solutions enable reliable and efficient communication for businesses of all sizes.",
+      "features": [
+        "VoIP systems",
+        "Unified communications",
+        "Call center solutions",
+        "Mobile communications",
+        "Video conferencing"
+      ]
+    },
+    "networking": {
+      "title": "Networking",
+      "description": "We provide secure and scalable network solutions that connect your business and enable seamless communication and collaboration.",
+      "features": [
+        "LAN/WAN design and implementation",
+        "Wireless networking",
+        "Network security",
+        "SD-WAN solutions",
+        "Network monitoring and management"
+      ]
+    },
+    "securitySystems": {
+      "title": "Security Systems",
+      "description": "Our comprehensive security solutions protect your business assets and ensure the safety of your people and property.",
+      "features": [
+        "CCTV systems",
+        "Access control",
+        "Alarm systems",
+        "Fire detection and suppression",
+        "Integrated security management"
+      ]
+    },
+    "softwareDevelopment": {
+      "title": "Software Development",
+      "description": "We develop custom software solutions tailored to your specific business needs, helping you streamline operations and improve efficiency.",
+      "features": [
+        "Web application development",
+        "Mobile app development",
+        "Custom business applications",
+        "Database design and development",
+        "API integration"
+      ]
+    },
+    "consulting": {
+      "title": "Consulting Services",
+      "description": "Our expert consultants provide strategic advice and guidance on technology strategy and implementation, helping you make informed decisions.",
+      "features": [
+        "IT strategy development",
+        "Technology assessment",
+        "Digital transformation",
+        "Project management",
+        "IT governance"
+      ]
+    },
+    "support": {
+      "title": "Support & Maintenance",
+      "description": "We provide ongoing support and maintenance services to ensure your systems operate at optimal performance and minimize downtime.",
+      "features": [
+        "24/7 technical support",
+        "Preventive maintenance",
+        "System monitoring",
+        "Software updates and patches",
+        "Help desk services"
+      ]
+    }
+  },
+  "projects": {
+    "hero": {
+      "title": "Our Projects",
+      "subtitle": "Showcasing Our Expertise and Success"
+    },
+    "filters": {
+      "all": "All",
+      "itInfrastructure": "IT Infrastructure",
+      "telecommunications": "Telecommunications",
+      "networking": "Networking",
+      "securitySystems": "Security Systems",
+      "softwareDevelopment": "Software Development",
+      "consulting": "Consulting"
+    },
+    "projectDetails": {
+      "client": "Client",
+      "duration": "Duration",
+      "services": "Services",
+      "challenge": "Challenge",
+      "solution": "Solution",
+      "results": "Results",
+      "technologies": "Technologies Used"
+    }
+  },
+  "careers": {
+    "hero": {
+      "title": "Careers at ElAmir",
+      "subtitle": "Join Our Team of Technology Experts"
+    },
+    "culture": {
+      "title": "Our Culture",
+      "content": "At ElAmir, we foster a culture of innovation, collaboration, and continuous learning. We believe in empowering our employees to grow professionally and personally, and we provide the resources and support they need to succeed.",
+      "values": {
+        "innovation": {
+          "title": "Innovation",
+          "description": "We embrace new ideas and technologies to stay at the forefront of our industry."
+        },
+        "teamwork": {
+          "title": "Teamwork",
+          "description": "We collaborate effectively, leveraging our diverse skills and perspectives."
+        },
+        "excellence": {
+          "title": "Excellence",
+          "description": "We strive for the highest standards in everything we do."
+        }
+      }
+    },
+    "benefits": {
+      "title": "Benefits",
+      "subtitle": "What We Offer Our Team Members",
+      "items": {
+        "competitive": {
+          "title": "Competitive Compensation",
+          "description": "Attractive salary packages and performance bonuses that recognize your contributions."
+        },
+        "health": {
+          "title": "Health Benefits",
+          "description": "Comprehensive health insurance coverage for you and your family."
+        },
+        "professional": {
+          "title": "Professional Development",
+          "description": "Ongoing training, certification support, and learning opportunities."
+        },
+        "work": {
+          "title": "Work-Life Balance",
+          "description": "Flexible scheduling options and generous paid time off."
+        },
+        "career": {
+          "title": "Career Growth",
+          "description": "Clear advancement paths and opportunities to grow within the company."
+        },
+        "team": {
+          "title": "Collaborative Environment",
+          "description": "Work with talented professionals in a supportive and inclusive workplace."
+        }
+      }
+    },
+    "openings": {
+      "title": "Current Openings",
+      "subtitle": "Explore Available Positions",
+      "noOpenings": "There are currently no open positions. Please check back later or send your resume to careers@attc.ly for future opportunities.",
+      "viewDetails": "View Details",
+      "hideDetails": "Hide Details",
+      "responsibilities": "Responsibilities",
+      "requirements": "Requirements"
+    },
+    "form": {
+      "title": "Application Form",
+      "subtitle": "Apply for a Position",
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "position": "Position Applied For",
+      "experience": "Professional Experience",
+      "experienceHint": "Briefly describe your relevant work experience, including companies, roles, and key achievements.",
+      "education": "Education Background",
+      "educationHint": "List your educational qualifications, including degrees, institutions, and graduation years.",
+      "coverLetter": "Cover Letter",
+      "coverLetterHint": "Tell us why you're interested in this position and how your skills and experience make you a good fit.",
+      "resume": "Upload Resume/CV",
+      "resumeHint": "Please upload your resume in PDF or Word format (max 5MB).",
+      "submit": "Submit Application",
+      "success": "Your application has been submitted successfully. We will contact you if your qualifications match our requirements.",
+      "error": "There was an error submitting your application. Please try again later."
+    }
+  },
+  "clientBrief": {
+    "hero": {
+      "title": "Submit a Project Brief",
+      "subtitle": "Tell Us About Your Project and How We Can Help"
+    },
+    "form": {
+      "title": "Project Brief Form",
+      "companyInfo": "Company Information",
+      "companyName": "Company Name",
+      "industry": "Industry",
+      "contactInfo": "Contact Information",
+      "contactName": "Contact Name",
+      "email": "Email",
+      "phone": "Phone",
+      "projectInfo": "Project Information",
+      "projectType": "Project Type",
+      "projectDescription": "Project Description",
+      "currentChallenges": "Current Challenges",
+      "goals": "Project Goals",
+      "timeline": "Expected Timeline",
+      "budget": "Budget Range",
+      "additionalInfo": "Additional Information",
+      "attachments": "Upload Attachments",
+      "submit": "Submit Brief",
+      "success": "Your project brief has been submitted successfully. We will contact you shortly to discuss your project in more detail.",
+      "error": "There was an error submitting your project brief. Please try again later."
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "Blog & News",
+      "subtitle": "Insights, Updates, and Industry News"
+    },
+    "categories": {
+      "all": "All",
+      "itInfrastructure": "IT Infrastructure",
+      "security": "Security",
+      "cloud": "Cloud Computing",
+      "telecommunications": "Telecommunications",
+      "softwareDevelopment": "Software Development",
+      "support": "Support & Maintenance",
+      "companyNews": "Company News",
+      "industryInsights": "Industry Insights",
+      "techTips": "Tech Tips",
+      "caseStudies": "Case Studies"
+    },
+    "search": {
+      "placeholder": "Search articles..."
+    },
+    "readMore": "Read More",
+    "relatedPosts": "Related Posts",
+    "share": "Share",
+    "author": "Author",
+    "publishDate": "Published on",
+    "newsletter": {
+      "title": "Subscribe to Our Newsletter",
+      "subtitle": "Stay updated with our latest news and insights",
+      "placeholder": "Enter your email",
+      "button": "Subscribe",
+      "privacy": "We respect your privacy. Unsubscribe at any time."
+    },
+    "post": {
+      "relatedPosts": "Related Posts",
+      "noRelatedPosts": "No related posts found",
+      "categories": "Categories",
+      "aboutAuthor": "About the Author",
+      "authorBio": "An experienced professional with extensive knowledge in the technology sector, dedicated to sharing insights and expertise through informative articles.",
+      "ctaTitle": "Need Help with Your Project?",
+      "ctaText": "Contact our team of experts to discuss your technology needs and how we can help you achieve your goals."
+    },
+    "breadcrumb": {
+      "blog": "Blog",
+      "home": "Home"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Contact Us",
+      "subtitle": "Get in Touch with Our Team"
+    },
+    "info": {
+      "title": "Contact Information",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Business Hours"
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message",
+      "success": "Your message has been sent successfully. We will contact you shortly.",
+      "error": "There was an error sending your message. Please try again later."
+    },
+    "locations": {
+      "title": "Our Locations",
+      "tripoli": {
+        "title": "Tripoli Office",
+        "address": "123 Example Street, Tripoli, Libya",
+        "phone": "+218 12 345 6789",
+        "email": "tripoli@attc.ly"
+      },
+      "benghazi": {
+        "title": "Benghazi Office",
+        "address": "456 Sample Avenue, Benghazi, Libya",
+        "phone": "+218 98 765 4321",
+        "email": "benghazi@attc.ly"
+      }
+    }
+  },
+  "footer": {
+    "about": {
+      "title": "About ElAmir",
+      "content": "ElAmir for IT and Telecom is a leading technology company in Libya, providing comprehensive IT and telecommunications solutions to businesses and organizations across the country."
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "home": "Home",
+      "about": "About Us",
+      "services": "Services",
+      "projects": "Projects",
+      "careers": "Careers",
+      "blog": "Blog",
+      "contact": "Contact"
+    },
+    "services": {
+      "title": "Our Services",
+      "itInfrastructure": "IT Infrastructure",
+      "telecommunications": "Telecommunications",
+      "networking": "Networking",
+      "securitySystems": "Security Systems",
+      "softwareDevelopment": "Software Development",
+      "consulting": "Consulting Services",
+      "support": "Support & Maintenance"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "address": "123 Example Street, Tripoli, Libya",
+      "phone": "+218 12 345 6789",
+      "email": "info@attc.ly"
+    },
+    "copyright": "© 2025 ElAmir for IT and Telecom. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "message": "The page you are looking for does not exist or has been moved.",
+    "button": "Back to Home"
+  }
+}
