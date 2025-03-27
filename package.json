@@ -17,21 +17,22 @@
   "author": "ElAmir for IT and Telecom",
   "license": "UNLICENSED",
   "dependencies": {
+    "autoprefixer": "^10.4.16",
+    "axios": "^1.8.4",
+    "i18next": "^23.5.1",
+    "i18next-browser-languagedetector": "^7.1.0",
+    "postcss": "^8.4.30",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.16.0",
-    "i18next": "^23.5.1",
     "react-i18next": "^13.2.2",
-    "i18next-browser-languagedetector": "^7.1.0",
-    "tailwindcss": "^3.3.3",
-    "postcss": "^8.4.30",
-    "autoprefixer": "^10.4.16"
+    "react-router-dom": "^6.16.0",
+    "tailwindcss": "^3.3.3"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.1.0",
-    "vite": "^4.4.9",
     "eslint": "^8.50.0",
     "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "vite": "^4.4.9"
   }
 }
