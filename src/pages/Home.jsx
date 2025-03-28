@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -8,135 +8,102 @@ import ProjectCard from '../components/projects/ProjectCard';
 import TestimonialCard from '../components/testimonials/TestimonialCard';
 import StatCard from '../components/stats/StatCard';
 
+// Import API services
+import { contentService, projectService, testimonialService, statsService } from '../services/api';
+
 const Home = () => {
   const { t, i18n } = useTranslation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   
-  // Sample data for services
-  const services = [
-    {
-      id: 'it-infrastructure',
-      icon: 'server',
-      title: t('home.services.itInfrastructure.title'),
-      description: t('home.services.itInfrastructure.description'),
-    },
-    {
-      id: 'telecommunications',
-      icon: 'phone',
-      title: t('home.services.telecommunications.title'),
-      description: t('home.services.telecommunications.description'),
-    },
-    {
-      id: 'networking',
-      icon: 'network-wired',
-      title: t('home.services.networking.title'),
-      description: t('home.services.networking.description'),
-    },
-    {
-      id: 'security-systems',
-      icon: 'shield-alt',
-      title: t('home.services.securitySystems.title'),
-      description: t('home.services.securitySystems.description'),
-    },
-    {
-      id: 'software-development',
-      icon: 'code',
-      title: t('home.services.softwareDevelopment.title'),
-      description: t('home.services.softwareDevelopment.description'),
-    },
-    {
-      id: 'consulting',
-      icon: 'comments',
-      title: t('home.services.consulting.title'),
-      description: t('home.services.consulting.description'),
-    },
-    {
-      id: 'support',
-      icon: 'headset',
-      title: t('home.services.support.title'),
-      description: t('home.services.support.description'),
-    }
-  ];
+  // State for content sections
+  const [heroContent, setHeroContent] = useState({
+    title: { en: '', ar: '' },
+    subtitle: { en: '', ar: '' },
+    buttonText: { en: '', ar: '' },
+    backgroundImage: ''
+  });
+  
+  const [aboutContent, setAboutContent] = useState({
+    title: { en: '', ar: '' },
+    content: { en: '', ar: '' },
+    image: ''
+  });
+  
+  const [services, setServices] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [stats, setStats] = useState([]);
 
-  // Sample data for projects
-  const projects = [
-    {
-      id: 'project1',
-      title: 'Libyan National Oil Corporation Network Upgrade',
-      category: 'networking',
-      image: '/images/projects/project1.jpg',
-      client: 'Libyan National Oil Corporation',
-    },
-    {
-      id: 'project2',
-      title: 'Tripoli Medical Center IT Infrastructure',
-      category: 'it-infrastructure',
-      image: '/images/projects/project2.jpg',
-      client: 'Tripoli Medical Center',
-    },
-    {
-      id: 'project3',
-      title: 'Bank of Commerce & Development Security System',
-      category: 'security-systems',
-      image: '/images/projects/project3.jpg',
-      client: 'Bank of Commerce & Development',
-    }
-  ];
+  // Fetch all content on component mount
+  useEffect(() => {
+    const fetchAllContent = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        // Fetch home page content (hero, about, services sections)
+        const homeContent = await contentService.getHomeContent();
+        if (homeContent.hero) setHeroContent(homeContent.hero);
+        if (homeContent.about) setAboutContent(homeContent.about);
+        if (homeContent.services && homeContent.services.items) {
+          setServices(homeContent.services.items);
+        }
+        
+        // Fetch projects
+        const projectsData = await projectService.getProjects();
+        setProjects(projectsData.filter(project => project.featured));
+        
+        // Fetch testimonials
+        const testimonialsData = await testimonialService.getTestimonials();
+        setTestimonials(testimonialsData.filter(testimonial => testimonial.featured));
+        
+        // Fetch stats
+        const statsData = await statsService.getStats();
+        setStats(statsData);
+        
+      } catch (err) {
+        console.error('Error fetching home page content:', err);
+        setError('Failed to load content. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchAllContent();
+  }, []);
 
-  // Sample data for testimonials
-  const testimonials = [
-    {
-      id: 1,
-      name: 'Ahmed Al-Mansouri',
-      position: 'IT Director',
-      company: 'Libyan National Oil Corporation',
-      content: 'ElAmir provided exceptional service in upgrading our network infrastructure. Their team was professional, knowledgeable, and completed the project ahead of schedule.',
-      image: '/images/testimonials/testimonial1.jpg',
-    },
-    {
-      id: 2,
-      name: 'Fatima El-Zawawi',
-      position: 'CTO',
-      company: 'Bank of Commerce & Development',
-      content: 'We have been working with ElAmir for over 5 years, and they have consistently delivered high-quality IT solutions that have helped us improve our operations and security.',
-      image: '/images/testimonials/testimonial2.jpg',
-    },
-    {
-      id: 3,
-      name: 'Mohammed Al-Barghathi',
-      position: 'CEO',
-      company: 'Tripoli Medical Center',
-      content: 'The IT infrastructure implemented by ElAmir has significantly improved our hospital\'s efficiency and patient care. Their ongoing support has been invaluable.',
-      image: '/images/testimonials/testimonial3.jpg',
-    }
-  ];
+  // Helper function to get content based on current language
+  const getLocalizedContent = (content) => {
+    return content[i18n.language] || content.en;
+  };
 
-  // Sample data for stats
-  const stats = [
-    {
-      id: 1,
-      value: 15,
-      label: t('home.stats.yearsInBusiness'),
-      icon: 'calendar-alt',
-    },
-    {
-      id: 2,
-      value: 200,
-      label: t('home.stats.projectsCompleted'),
-      icon: 'check-circle',
-    },
-    {
-      id: 3,
-      value: 150,
-      label: t('home.stats.clientsServed'),
-      icon: 'users',
-    },
-    {
-      id: 4,
-      value: 50,
-      label: t('home.stats.teamMembers'),
-      icon: 'user-tie',
-    }
-  ];
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Error Loading Content</h2>
+          <p className="text-gray-700">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-16">
@@ -147,13 +114,13 @@ const Home = () => {
         <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
-              {t('home.hero.title')}
+              {getLocalizedContent(heroContent.title)}
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-100 animate-fadeIn">
-              {t('home.hero.subtitle')}
+              {getLocalizedContent(heroContent.subtitle)}
             </p>
             <Link to="/services" className="btn btn-accent-500 text-primary-900 font-bold px-8 py-4 text-lg animate-fadeIn">
-              {t('home.hero.cta')}
+              {getLocalizedContent(heroContent.buttonText)}
             </Link>
           </div>
         </div>
@@ -165,10 +132,10 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="animate-slideInFromLeft">
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary-700">
-                {t('home.about.title')}
+                {getLocalizedContent(aboutContent.title)}
               </h2>
               <p className="text-lg text-gray-700 mb-6">
-                {t('home.about.content')}
+                {getLocalizedContent(aboutContent.content)}
               </p>
               <Link to="/about" className="btn btn-outline">
                 {t('buttons.learnMore')}
@@ -177,7 +144,7 @@ const Home = () => {
             <div className="relative animate-slideInFromRight">
               <div className="rounded-lg overflow-hidden shadow-xl">
                 <img 
-                  src="/images/about-image.jpg" 
+                  src={aboutContent.image} 
                   alt="ElAmir Office" 
                   className="w-full h-auto"
                 />

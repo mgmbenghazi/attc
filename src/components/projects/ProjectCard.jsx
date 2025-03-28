@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const ProjectCard = ({ project, index }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
   
   // Get category label
@@ -79,6 +79,14 @@ const ProjectCard = ({ project, index }) => {
     return `${index * 0.1}s`;
   };
 
+  // Helper function to get content based on current language
+  const getLocalizedContent = (content) => {
+    if (typeof content === 'object' && content !== null) {
+      return content[i18n.language] || content.en;
+    }
+    return content;
+  };
+
   // Placeholder image if project image is not available
   const imageSrc = project.image || '/images/placeholder-project.jpg';
 
@@ -101,7 +109,7 @@ const ProjectCard = ({ project, index }) => {
           {/* Image with zoom effect */}
           <img 
             src={imageSrc} 
-            alt={project.title} 
+            alt={getLocalizedContent(project.title)} 
             className={`w-full h-full object-cover transition-transform duration-700 ${
               isHovered ? 'scale-110' : 'scale-100'
             }`}
@@ -133,7 +141,7 @@ const ProjectCard = ({ project, index }) => {
               <svg className="w-5 h-5 mr-2 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
               </svg>
-              <p className="font-medium">{project.client}</p>
+              <p className="font-medium">{getLocalizedContent(project.client)}</p>
             </div>
           </div>
         </div>
@@ -141,7 +149,7 @@ const ProjectCard = ({ project, index }) => {
         {/* Content */}
         <div className="card-body">
           <h3 className="card-title text-primary-700 line-clamp-2 group-hover:gradient-text">
-            {project.title}
+            {getLocalizedContent(project.title)}
           </h3>
           
           {/* View project button */}

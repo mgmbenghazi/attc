@@ -83,9 +83,17 @@ const ServiceCard = ({ service, index }) => {
     return `${index * 0.1}s`;
   };
 
+  // Helper function to get content based on current language
+  const getLocalizedContent = (content) => {
+    if (typeof content === 'object' && content !== null) {
+      return content[t('language')] || content.en;
+    }
+    return content;
+  };
+
   return (
     <div 
-      className="group"
+      className="group relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -108,12 +116,12 @@ const ServiceCard = ({ service, index }) => {
           
           {/* Title with gradient on hover */}
           <h3 className="card-title text-primary-700 group-hover:gradient-text text-center text-xl md:text-2xl mb-4">
-            {service.title}
+            {getLocalizedContent(service.title)}
           </h3>
           
           {/* Description */}
           <p className="card-text mb-6 text-center flex-grow">
-            {service.description}
+            {getLocalizedContent(service.description)}
           </p>
           
           {/* Button that slides in on hover */}

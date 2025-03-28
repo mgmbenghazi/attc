@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const TestimonialCard = ({ testimonial, index }) => {
+  const { i18n } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
   
   // Animation delay based on index
@@ -15,6 +17,14 @@ const TestimonialCard = ({ testimonial, index }) => {
   const getRandomRotation = () => {
     const rotations = ['-rotate-1', 'rotate-0', 'rotate-1'];
     return rotations[index % rotations.length];
+  };
+
+  // Helper function to get content based on current language
+  const getLocalizedContent = (content) => {
+    if (typeof content === 'object' && content !== null) {
+      return content[i18n.language] || content.en;
+    }
+    return content;
   };
 
   return (
