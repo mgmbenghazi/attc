@@ -23,6 +23,19 @@ jobs:
     - name: Build
       run: npm run build
       
+    - name: Copy server files to dist
+      run: |
+        mkdir -p dist/api
+        cp -r api/* dist/api/
+        cp .htaccess dist/
+        cp index.php dist/
+        cp deploy.php dist/
+        cp generate_api.php dist/
+        cp setup_database.php dist/
+        cp web.config dist/
+        cp schema.sql dist/
+      continue-on-error: true
+      
     - name: FTP Deploy
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
@@ -31,4 +44,8 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./dist/
         server-dir: /
-        dangerous-clean-slate: true  # This will delete all existing files in the target directory
+        dangerous-clean-slate: false  # Changed to false to preserve files not in the local directory
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
