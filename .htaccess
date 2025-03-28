@@ -1,12 +1,16 @@
 # Enable rewriting
 RewriteEngine On
 
-# If the request is not for a file or directory that exists
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Set the base directory for rewrites
+RewriteBase /
 
-# Rewrite all requests to index.php
-RewriteRule ^ index.php [QSA,L]
+# Don't rewrite files or directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Rewrite everything else to index.html to allow html5 state links
+RewriteRule ^ index.html [L]
 
 # Set security headers
 <IfModule mod_headers.c>
@@ -48,3 +52,21 @@ RewriteRule ^ index.php [QSA,L]
     ExpiresByType font/woff "access plus 1 year"
     ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
+
+# PHP settings
+<IfModule mod_php7.c>
+    php_flag display_errors off
+    php_value max_execution_time 300
+    php_value memory_limit 128M
+    php_value post_max_size 64M
+    php_value upload_max_filesize 64M
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Prevent access to specific files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
