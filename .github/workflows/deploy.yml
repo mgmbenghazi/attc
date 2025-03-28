@@ -27,6 +27,40 @@ jobs:
       run: |
         mkdir -p dist/api
         cp -r api/* dist/api/
+        
+        # Create config.php file
+        cat > dist/api/config.php << 'EOL'
+        <?php
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        header('Content-Type: application/json');
+        
+        $host = 'localhost';
+        $db_name = 'attcly_db';
+        $username = 'attcly_dbuser';
+        $password = 'Na0797637745!!';
+        $conn = null;
+        
+        try {
+            $conn = new PDO("mysql:host=$host;dbname=$db_name", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e) {
+            echo json_encode(['error' => 'Connection failed: ' . $e->getMessage()]);
+            die();
+        }
+        ?>
+        EOL
+        
+        # Create .htaccess for API routing
+        cat > dist/api/.htaccess << 'EOL'
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^([^/]+)/?$ $1.php [L]
+        RewriteRule ^([^/]+)/([^/]+)/?$ $1.php/$2 [L]
+        EOL
+        
         cp .htaccess dist/
         cp index.php dist/
         cp deploy.php dist/
