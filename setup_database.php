@@ -18,9 +18,17 @@ try {
     $conn = new PDO("mysql:host=$host;dbname=$db_name", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // Read and execute the SQL schema file
+    // Read the SQL schema file
     $sql = file_get_contents('schema.sql');
-    $conn->exec($sql);
+    
+    // Execute each statement separately
+    $statements = array_filter(array_map('trim', explode(';', $sql)));
+    foreach ($statements as $statement) {
+        if (!empty($statement)) {
+            $conn->exec($statement);
+        }
+    }
+    
     echo "Database schema created successfully<br>\n";
     
     // Optional: Insert sample data
