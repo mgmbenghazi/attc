@@ -26,6 +26,10 @@ import Login from './pages/admin/Login';
 import DashboardHome from './pages/admin/DashboardHome';
 import HomePageEditor from './pages/admin/HomePageEditor';
 import ClientBriefs from './pages/admin/ClientBriefs';
+import ProjectsEditor from './pages/admin/ProjectsEditor';
+import TestimonialsEditor from './pages/admin/TestimonialsEditor';
+import StatsEditor from './pages/admin/StatsEditor';
+import CareersEditor from './pages/admin/CareersEditor';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -89,16 +93,15 @@ function App() {
             <Route path="home-page" element={<HomePageEditor />} />
             <Route path="about" element={<div>About Page Editor</div>} />
             <Route path="services" element={<div>Services Editor</div>} />
-            <Route path="projects" element={<div>Projects Editor</div>} />
+            <Route path="projects" element={<ProjectsEditor />} />
             <Route path="blog" element={<div>Blog Editor</div>} />
-            <Route path="careers" element={<div>Careers Editor</div>} />
+            <Route path="careers" element={<CareersEditor />} />
             <Route path="client-briefs" element={<ClientBriefs />} />
             <Route path="settings" element={<div>Settings</div>} />
             
-            {/* Add routes for creating new items */}
-            <Route path="projects/new" element={<div>New Project</div>} />
-            <Route path="services/new" element={<div>New Service</div>} />
-            <Route path="blog/new" element={<div>New Blog Post</div>} />
+            {/* Additional admin routes for new components */}
+            <Route path="testimonials" element={<TestimonialsEditor />} />
+            <Route path="stats" element={<StatsEditor />} />
           </Route>
           
           {/* 404 Route */}

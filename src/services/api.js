@@ -377,6 +377,396 @@ export const projectService = {
   }
 };
 
+// Testimonials management services
+export const testimonialService = {
+  getTestimonials: async () => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        return [
+          {
+            id: 1,
+            name: 'Ahmed Al-Mansouri',
+            position: 'IT Director',
+            company: 'Libyan National Oil Corporation',
+            content: 'ElAmir provided exceptional service in upgrading our network infrastructure. Their team was professional, knowledgeable, and completed the project ahead of schedule.',
+            image: '/images/testimonials/testimonial1.jpg',
+            featured: true
+          },
+          {
+            id: 2,
+            name: 'Fatima El-Zawawi',
+            position: 'CTO',
+            company: 'Bank of Commerce & Development',
+            content: 'We have been working with ElAmir for over 5 years, and they have consistently delivered high-quality IT solutions that have helped us improve our operations and security.',
+            image: '/images/testimonials/testimonial2.jpg',
+            featured: true
+          },
+          {
+            id: 3,
+            name: 'Mohammed Al-Barghathi',
+            position: 'CEO',
+            company: 'Tripoli Medical Center',
+            content: 'The IT infrastructure implemented by ElAmir has significantly improved our hospital\'s efficiency and patient care. Their ongoing support has been invaluable.',
+            image: '/images/testimonials/testimonial3.jpg',
+            featured: false
+          }
+        ];
+      }
+      
+      // For production
+      const response = await api.get('/testimonials');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  getTestimonial: async (id) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        const testimonials = await this.getTestimonials();
+        return testimonials.find(t => t.id === parseInt(id));
+      }
+      
+      // For production
+      const response = await api.get(`/testimonials/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  updateTestimonial: async (id, testimonialData) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Updating testimonial ${id}:`, testimonialData);
+        return { 
+          ...testimonialData,
+          id: parseInt(id)
+        };
+      }
+      
+      // For production
+      const response = await api.put(`/testimonials/${id}`, testimonialData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  createTestimonial: async (testimonialData) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Creating new testimonial:', testimonialData);
+        return { 
+          ...testimonialData, 
+          id: Math.floor(Math.random() * 1000) 
+        };
+      }
+      
+      // For production
+      const response = await api.post('/testimonials', testimonialData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  deleteTestimonial: async (id) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Deleting testimonial ${id}`);
+        return { success: true };
+      }
+      
+      // For production
+      const response = await api.delete(`/testimonials/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
+// Stats management services
+export const statsService = {
+  getStats: async () => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        return [
+          {
+            id: 1,
+            value: 15,
+            label: {
+              en: 'Years in Business',
+              ar: 'سنوات في العمل'
+            },
+            icon: 'calendar-alt',
+            prefix: '',
+            suffix: '',
+            animation: 'count'
+          },
+          {
+            id: 2,
+            value: 200,
+            label: {
+              en: 'Projects Completed',
+              ar: 'المشاريع المنجزة'
+            },
+            icon: 'check-circle',
+            prefix: '',
+            suffix: '+',
+            animation: 'count'
+          },
+          {
+            id: 3,
+            value: 150,
+            label: {
+              en: 'Clients Served',
+              ar: 'العملاء الذين تمت خدمتهم'
+            },
+            icon: 'users',
+            prefix: '',
+            suffix: '+',
+            animation: 'count'
+          },
+          {
+            id: 4,
+            value: 50,
+            label: {
+              en: 'Team Members',
+              ar: 'أعضاء الفريق'
+            },
+            icon: 'user-tie',
+            prefix: '',
+            suffix: '',
+            animation: 'count'
+          }
+        ];
+      }
+      
+      // For production
+      const response = await api.get('/stats');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  updateStat: async (id, statData) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Updating stat ${id}:`, statData);
+        return { 
+          ...statData,
+          id: parseInt(id)
+        };
+      }
+      
+      // For production
+      const response = await api.put(`/stats/${id}`, statData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  createStat: async (statData) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Creating new stat:', statData);
+        return { 
+          ...statData, 
+          id: Math.floor(Math.random() * 1000) 
+        };
+      }
+      
+      // For production
+      const response = await api.post('/stats', statData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  deleteStat: async (id) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Deleting stat ${id}`);
+        return { success: true };
+      }
+      
+      // For production
+      const response = await api.delete(`/stats/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
+// Careers/Jobs management services
+export const careersService = {
+  getJobs: async () => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        return [
+          {
+            id: 1,
+            title: {
+              en: 'Senior Network Engineer',
+              ar: 'مهندس شبكات أول'
+            },
+            department: {
+              en: 'IT Infrastructure',
+              ar: 'البنية التحتية لتكنولوجيا المعلومات'
+            },
+            location: {
+              en: 'Tripoli, Libya',
+              ar: 'طرابلس، ليبيا'
+            },
+            type: 'full-time',
+            description: {
+              en: 'We are looking for an experienced Network Engineer to design, implement and maintain our network infrastructure.',
+              ar: 'نبحث عن مهندس شبكات ذو خبرة لتصميم وتنفيذ وصيانة البنية التحتية للشبكة لدينا.'
+            },
+            requirements: {
+              en: 'Bachelor\'s degree in Computer Science or related field. 5+ years of experience in network engineering. CCNP or equivalent certification.',
+              ar: 'شهادة بكالوريوس في علوم الكمبيوتر أو مجال ذي صلة. 5+ سنوات من الخبرة في هندسة الشبكات. شهادة CCNP أو ما يعادلها.'
+            },
+            responsibilities: {
+              en: 'Design and implement network infrastructure. Troubleshoot network issues. Ensure network security and performance.',
+              ar: 'تصميم وتنفيذ البنية التحتية للشبكة. استكشاف مشكلات الشبكة وإصلاحها. ضمان أمن وأداء الشبكة.'
+            },
+            salary: '$60,000 - $80,000',
+            postedDate: '2023-06-01',
+            closingDate: '2023-07-15',
+            isActive: true
+          },
+          {
+            id: 2,
+            title: {
+              en: 'Software Developer',
+              ar: 'مطور برمجيات'
+            },
+            department: {
+              en: 'Software Development',
+              ar: 'تطوير البرمجيات'
+            },
+            location: {
+              en: 'Benghazi, Libya',
+              ar: 'بنغازي، ليبيا'
+            },
+            type: 'full-time',
+            description: {
+              en: 'We are seeking a talented Software Developer to join our team and help build innovative solutions for our clients.',
+              ar: 'نبحث عن مطور برمجيات موهوب للانضمام إلى فريقنا والمساعدة في بناء حلول مبتكرة لعملائنا.'
+            },
+            requirements: {
+              en: 'Bachelor\'s degree in Computer Science or related field. 3+ years of experience in software development. Proficiency in JavaScript, React, and Node.js.',
+              ar: 'شهادة بكالوريوس في علوم الكمبيوتر أو مجال ذي صلة. 3+ سنوات من الخبرة في تطوير البرمجيات. إتقان JavaScript و React و Node.js.'
+            },
+            responsibilities: {
+              en: 'Develop and maintain web applications. Collaborate with cross-functional teams. Write clean, maintainable code.',
+              ar: 'تطوير وصيانة تطبيقات الويب. التعاون مع الفرق متعددة الوظائف. كتابة كود نظيف وقابل للصيانة.'
+            },
+            salary: '$50,000 - $70,000',
+            postedDate: '2023-05-15',
+            closingDate: '2023-06-30',
+            isActive: true
+          }
+        ];
+      }
+      
+      // For production
+      const response = await api.get('/careers/jobs');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  getJob: async (id) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        const jobs = await this.getJobs();
+        return jobs.find(j => j.id === parseInt(id));
+      }
+      
+      // For production
+      const response = await api.get(`/careers/jobs/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  updateJob: async (id, jobData) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Updating job ${id}:`, jobData);
+        return { 
+          ...jobData,
+          id: parseInt(id)
+        };
+      }
+      
+      // For production
+      const response = await api.put(`/careers/jobs/${id}`, jobData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  createJob: async (jobData) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Creating new job:', jobData);
+        return { 
+          ...jobData, 
+          id: Math.floor(Math.random() * 1000) 
+        };
+      }
+      
+      // For production
+      const response = await api.post('/careers/jobs', jobData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  deleteJob: async (id) => {
+    try {
+      // For development
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Deleting job ${id}`);
+        return { success: true };
+      }
+      
+      // For production
+      const response = await api.delete(`/careers/jobs/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
 // Client brief management
 export const clientBriefService = {
   getBriefs: async () => {
