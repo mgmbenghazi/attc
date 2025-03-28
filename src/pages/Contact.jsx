@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { contactService } from '../services/api';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -24,25 +25,41 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // In a real application, this would be an API call to submit the form
-    // For now, we'll simulate a successful submission
     setFormStatus({
-      submitted: true,
-      success: true,
-      message: t('contact.form.success')
-    });
-
-    // Reset form after successful submission
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
+      submitted: false,
+      success: false,
       message: ''
     });
+    
+    try {
+      // Submit form data to API
+      await contactService.submitContactForm(formData);
+      
+      setFormStatus({
+        submitted: true,
+        success: true,
+        message: t('contact.form.success')
+      });
+
+      // Reset form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+    } catch (err) {
+      console.error('Error submitting contact form:', err);
+      setFormStatus({
+        submitted: true,
+        success: false,
+        message: t('contact.form.error')
+      });
+    }
   };
 
   return (

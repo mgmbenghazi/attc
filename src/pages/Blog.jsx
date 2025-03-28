@@ -1,92 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { blogService } from '../services/api';
 
 const Blog = () => {
   const { t } = useTranslation();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   
-  // Sample blog posts data
-  const blogPosts = [
-    {
-      id: 'post1',
-      title: 'The Future of IT Infrastructure in Libya',
-      slug: 'future-it-infrastructure-libya',
-      category: 'it-infrastructure',
-      author: 'Ahmed Al-Mansouri',
-      date: '2025-03-15',
-      image: '/images/blog/post1.jpg',
-      excerpt: 'Exploring the evolving landscape of IT infrastructure in Libya and the opportunities for digital transformation in the region.',
-      tags: ['IT Infrastructure', 'Digital Transformation', 'Libya']
-    },
-    {
-      id: 'post2',
-      title: 'Securing Your Business Network: Best Practices',
-      slug: 'securing-business-network-best-practices',
-      category: 'security',
-      author: 'Fatima El-Zawawi',
-      date: '2025-03-10',
-      image: '/images/blog/post2.jpg',
-      excerpt: 'Learn the essential best practices for securing your business network against modern cyber threats and vulnerabilities.',
-      tags: ['Cybersecurity', 'Network Security', 'Best Practices']
-    },
-    {
-      id: 'post3',
-      title: 'Cloud Computing Solutions for Small Businesses',
-      slug: 'cloud-computing-solutions-small-businesses',
-      category: 'cloud',
-      author: 'Mohammed Al-Barghathi',
-      date: '2025-03-05',
-      image: '/images/blog/post3.jpg',
-      excerpt: 'Discover how small businesses can leverage cloud computing solutions to enhance efficiency and reduce IT costs.',
-      tags: ['Cloud Computing', 'Small Business', 'Cost Efficiency']
-    },
-    {
-      id: 'post4',
-      title: 'The Role of 5G in Telecommunications Evolution',
-      slug: 'role-5g-telecommunications-evolution',
-      category: 'telecommunications',
-      author: 'Layla Ibrahim',
-      date: '2025-02-28',
-      image: '/images/blog/post4.jpg',
-      excerpt: 'Exploring how 5G technology is revolutionizing telecommunications and its potential impact on businesses and consumers.',
-      tags: ['5G', 'Telecommunications', 'Technology Trends']
-    },
-    {
-      id: 'post5',
-      title: 'Implementing Effective IT Support Systems',
-      slug: 'implementing-effective-it-support-systems',
-      category: 'support',
-      author: 'Ahmed Al-Mansouri',
-      date: '2025-02-20',
-      image: '/images/blog/post5.jpg',
-      excerpt: 'A comprehensive guide to implementing IT support systems that enhance productivity and user satisfaction.',
-      tags: ['IT Support', 'Help Desk', 'Customer Service']
-    },
-    {
-      id: 'post6',
-      title: 'The Impact of AI on Modern Software Development',
-      slug: 'impact-ai-modern-software-development',
-      category: 'software-development',
-      author: 'Fatima El-Zawawi',
-      date: '2025-02-15',
-      image: '/images/blog/post6.jpg',
-      excerpt: 'How artificial intelligence is transforming software development processes and creating new opportunities for innovation.',
-      tags: ['AI', 'Software Development', 'Innovation']
-    }
-  ];
-
-  // Blog categories
-  const categories = [
-    { id: 'all', label: t('blog.categories.all') },
-    { id: 'it-infrastructure', label: t('blog.categories.itInfrastructure') },
-    { id: 'security', label: t('blog.categories.security') },
-    { id: 'cloud', label: t('blog.categories.cloud') },
-    { id: 'telecommunications', label: t('blog.categories.telecommunications') },
-    { id: 'software-development', label: t('blog.categories.softwareDevelopment') },
-    { id: 'support', label: t('blog.categories.support') }
-  ];
+  // Fetch blog posts and categories from API
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        // Fetch blog posts
+        const posts = await blogService.getBlogPosts();
+        setBlogPosts(posts);
+        
+        // Fetch categories
+        const cats = await blogService.getBlogCategories();
+        setCategories(cats);
+      } catch (err) {
+        console.error('Error fetching blog data:', err);
+        setError('Failed to load blog content. Please try again later.');
+        // Fallback to sample data if API fails
+        setBlogPosts([
+          {
+            id: 'post1',
+            title: 'The Future of IT Infrastructure in Libya',
+            slug: 'future-it-infrastructure-libya',
+            category: 'it-infrastructure',
+            author: 'Ahmed Al-Mansouri',
+            date: '2025-03-15',
+            image: '/images/blog/post1.jpg',
+            excerpt: 'Exploring the evolving landscape of IT infrastructure in Libya and the opportunities for digital transformation in the region.',
+            tags: ['IT Infrastructure', 'Digital Transformation', 'Libya']
+          },
+          {
+            id: 'post2',
+            title: 'Securing Your Business Network: Best Practices',
+            slug: 'securing-business-network-best-practices',
+            category: 'security',
+            author: 'Fatima El-Zawawi',
+            date: '2025-03-10',
+            image: '/images/blog/post2.jpg',
+            excerpt: 'Learn the essential security practices to protect your business network from cyber threats and ensure data integrity.',
+            tags: ['Security', 'Networking', 'Cybersecurity']
+          },
+          {
+            id: 'post3',
+            title: 'Cloud Solutions for Small Businesses in Libya',
+            slug: 'cloud-solutions-small-businesses-libya',
+            category: 'cloud',
+            author: 'Mohammed Al-Farsi',
+            date: '2025-03-05',
+            image: '/images/blog/post3.jpg',
+            excerpt: 'How small businesses in Libya can leverage cloud solutions to improve efficiency and reduce IT costs.',
+            tags: ['Cloud Computing', 'Small Business', 'Cost Efficiency']
+          }
+        ]);
+        
+        setCategories([
+          { id: 'all', label: t('blog.categories.all') },
+          { id: 'it-infrastructure', label: t('blog.categories.itInfrastructure') },
+          { id: 'security', label: t('blog.categories.security') },
+          { id: 'cloud', label: t('blog.categories.cloud') },
+          { id: 'telecommunications', label: t('blog.categories.telecommunications') },
+          { id: 'software-development', label: t('blog.categories.softwareDevelopment') },
+          { id: 'support', label: t('blog.categories.support') }
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, [t]);
 
   // Filter posts based on active category and search query
   const filteredPosts = blogPosts.filter(post => {
@@ -94,7 +89,7 @@ const Blog = () => {
     const matchesSearch = searchQuery === '' || 
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())));
     
     return matchesCategory && matchesSearch;
   });
@@ -109,6 +104,30 @@ const Blog = () => {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+
+  if (isLoading) {
+    return (
+      <div className="pt-16">
+        <section className="relative bg-primary-700 text-white py-24 md:py-32">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-900 to-primary-700 opacity-90"></div>
+          <div className="absolute inset-0 bg-[url('/images/blog-hero-bg.jpg')] bg-cover bg-center mix-blend-overlay"></div>
+          <div className="container relative z-10">
+            <div className="max-w-3xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
+                {t('blog.hero.title')}
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 text-gray-100 animate-fadeIn">
+                {t('blog.hero.subtitle')}
+              </p>
+            </div>
+          </div>
+        </section>
+        <div className="flex justify-center items-center py-32">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-600"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-16">
@@ -170,6 +189,25 @@ const Blog = () => {
         </div>
       </section>
 
+      {/* Error Message */}
+      {error && (
+        <div className="container py-8">
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-red-700">{error}</p>
+                <p className="text-sm text-red-700 mt-2">Showing fallback content.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Blog Posts Grid Section */}
       <section className="py-16 md:py-24">
         <div className="container">
@@ -203,7 +241,7 @@ const Blog = () => {
                     <h3 className="card-title text-primary-700 line-clamp-2">{post.title}</h3>
                     <p className="text-gray-700 mb-4 line-clamp-3">{post.excerpt}</p>
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {post.tags.map((tag, i) => (
+                      {post.tags && post.tags.map((tag, i) => (
                         <span key={i} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
                           {tag}
                         </span>

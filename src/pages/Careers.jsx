@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { careersService } from '../services/api';
 
 const Careers = () => {
   const { t } = useTranslation();
   const [activeJobId, setActiveJobId] = useState(null);
+  const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,109 +24,103 @@ const Careers = () => {
     message: ''
   });
 
-  // Sample job listings
-  const jobs = [
-    {
-      id: 'job1',
-      title: 'Network Engineer',
-      department: 'IT Infrastructure',
-      location: 'Tripoli, Libya',
-      type: 'Full-time',
-      description: 'We are looking for a skilled Network Engineer to design, implement, and maintain our network infrastructure. The ideal candidate will have experience with Cisco networking equipment and strong troubleshooting skills.',
-      responsibilities: [
-        'Design, implement, and maintain network infrastructure',
-        'Configure and install network hardware, software, and systems',
-        'Monitor network performance and troubleshoot issues',
-        'Ensure network security and connectivity',
-        'Collaborate with IT team on infrastructure projects',
-        'Document network architecture and processes'
-      ],
-      requirements: [
-        'Bachelor\'s degree in Computer Science, IT, or related field',
-        '3+ years of experience in network engineering',
-        'Cisco certifications (CCNA, CCNP) preferred',
-        'Experience with firewalls, routers, switches, and VPNs',
-        'Knowledge of network security protocols and best practices',
-        'Strong problem-solving and communication skills',
-        'Ability to work in a team environment'
-      ]
-    },
-    {
-      id: 'job2',
-      title: 'Software Developer',
-      department: 'Software Development',
-      location: 'Tripoli, Libya',
-      type: 'Full-time',
-      description: 'We are seeking a talented Software Developer to join our team. The successful candidate will design, develop, and maintain software applications for our clients across various industries.',
-      responsibilities: [
-        'Develop high-quality software solutions',
-        'Collaborate with cross-functional teams',
-        'Write clean, maintainable, and efficient code',
-        'Troubleshoot and debug applications',
-        'Implement security and data protection measures',
-        'Stay updated with emerging technologies'
-      ],
-      requirements: [
-        'Bachelor\'s degree in Computer Science or related field',
-        '2+ years of experience in software development',
-        'Proficiency in JavaScript, React, and Node.js',
-        'Experience with database systems (SQL, MongoDB)',
-        'Knowledge of software development methodologies',
-        'Strong problem-solving and analytical skills',
-        'Excellent communication and teamwork abilities'
-      ]
-    },
-    {
-      id: 'job3',
-      title: 'IT Support Specialist',
-      department: 'Technical Support',
-      location: 'Benghazi, Libya',
-      type: 'Full-time',
-      description: 'We are looking for an IT Support Specialist to provide technical assistance to our clients. The ideal candidate will have excellent troubleshooting skills and a customer-focused approach.',
-      responsibilities: [
-        'Provide technical support to clients via phone, email, and in person',
-        'Troubleshoot hardware, software, and network issues',
-        'Install and configure computer systems and applications',
-        'Maintain IT inventory and documentation',
-        'Train users on new technologies and systems',
-        'Escalate complex issues to appropriate teams'
-      ],
-      requirements: [
-        'Associate\'s or Bachelor\'s degree in IT or related field',
-        '1+ years of experience in IT support',
-        'Knowledge of Windows and Linux operating systems',
-        'Understanding of network concepts and troubleshooting',
-        'Strong customer service and communication skills',
-        'Ability to work independently and in a team',
-        'Arabic and English language proficiency'
-      ]
-    },
-    {
-      id: 'job4',
-      title: 'Security Systems Technician',
-      department: 'Security Systems',
-      location: 'Tripoli, Libya',
-      type: 'Full-time',
-      description: 'We are seeking a Security Systems Technician to install, maintain, and troubleshoot security systems for our clients. The ideal candidate will have experience with CCTV, access control, and alarm systems.',
-      responsibilities: [
-        'Install, configure, and maintain security systems',
-        'Troubleshoot and repair security equipment',
-        'Perform system upgrades and updates',
-        'Conduct regular maintenance checks',
-        'Train clients on system operation',
-        'Document installations and maintenance activities'
-      ],
-      requirements: [
-        'Technical diploma or certification in electronics or related field',
-        '2+ years of experience with security systems',
-        'Knowledge of CCTV, access control, and alarm systems',
-        'Understanding of networking concepts',
-        'Valid driver\'s license and ability to travel to client sites',
-        'Strong problem-solving and customer service skills',
-        'Ability to work flexible hours when needed'
-      ]
-    }
-  ];
+  // Fetch jobs from API
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const data = await careersService.getJobs();
+        setJobs(data);
+      } catch (err) {
+        console.error('Error fetching jobs:', err);
+        setError('Failed to load job listings. Please try again later.');
+        // Fallback to sample data if API fails
+        setJobs([
+          {
+            id: 'job1',
+            title: 'Network Engineer',
+            department: 'IT Infrastructure',
+            location: 'Tripoli, Libya',
+            type: 'Full-time',
+            description: 'We are looking for a skilled Network Engineer to design, implement, and maintain our network infrastructure. The ideal candidate will have experience with Cisco networking equipment and strong troubleshooting skills.',
+            responsibilities: [
+              'Design, implement, and maintain network infrastructure',
+              'Configure and install network hardware, software, and systems',
+              'Monitor network performance and troubleshoot issues',
+              'Ensure network security and connectivity',
+              'Collaborate with IT team on infrastructure projects',
+              'Document network architecture and processes'
+            ],
+            requirements: [
+              'Bachelor\'s degree in Computer Science, IT, or related field',
+              '3+ years of experience in network engineering',
+              'Cisco certifications (CCNA, CCNP) preferred',
+              'Experience with firewalls, routers, switches, and VPNs',
+              'Knowledge of network security protocols and best practices',
+              'Strong problem-solving and communication skills',
+              'Ability to work in a team environment'
+            ]
+          },
+          {
+            id: 'job2',
+            title: 'Software Developer',
+            department: 'Software Development',
+            location: 'Tripoli, Libya',
+            type: 'Full-time',
+            description: 'We are seeking a talented Software Developer to join our team. The successful candidate will design, develop, and maintain software applications for our clients across various industries.',
+            responsibilities: [
+              'Develop high-quality software solutions',
+              'Collaborate with cross-functional teams',
+              'Write clean, maintainable, and efficient code',
+              'Troubleshoot and debug applications',
+              'Implement security and data protection measures',
+              'Stay updated with emerging technologies'
+            ],
+            requirements: [
+              'Bachelor\'s degree in Computer Science or related field',
+              '2+ years of experience in software development',
+              'Proficiency in JavaScript, React, and Node.js',
+              'Experience with database systems (SQL, MongoDB)',
+              'Knowledge of software development methodologies',
+              'Strong problem-solving and analytical skills',
+              'Excellent communication and teamwork abilities'
+            ]
+          },
+          {
+            id: 'job3',
+            title: 'IT Support Specialist',
+            department: 'Technical Support',
+            location: 'Benghazi, Libya',
+            type: 'Full-time',
+            description: 'We are looking for an IT Support Specialist to provide technical assistance to our clients. The ideal candidate will have excellent troubleshooting skills and a customer-focused approach.',
+            responsibilities: [
+              'Provide technical support to clients via phone, email, and in person',
+              'Troubleshoot hardware, software, and network issues',
+              'Install and configure computer systems and applications',
+              'Maintain IT inventory and documentation',
+              'Train users on new technologies and systems',
+              'Escalate complex issues to appropriate teams'
+            ],
+            requirements: [
+              'Associate\'s or Bachelor\'s degree in IT or related field',
+              '1+ years of experience in IT support',
+              'Knowledge of Windows and Linux operating systems',
+              'Understanding of network concepts and troubleshooting',
+              'Strong customer service and communication skills',
+              'Ability to work independently and in a team',
+              'Arabic and English language proficiency'
+            ]
+          }
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchJobs();
+  }, []);
 
   const handleJobClick = (jobId) => {
     setActiveJobId(activeJobId === jobId ? null : jobId);
@@ -160,32 +158,90 @@ const Careers = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // In a real application, this would be an API call to submit the form
-    // For now, we'll simulate a successful submission
     setFormStatus({
-      submitted: true,
-      success: true,
-      message: t('careers.form.success')
-    });
-
-    // Reset form after successful submission
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      position: activeJobId ? jobs.find(job => job.id === activeJobId)?.title || '' : '',
-      experience: '',
-      education: '',
-      coverLetter: '',
-      resume: null
+      submitted: false,
+      success: false,
+      message: ''
     });
     
-    // Scroll to the top of the form to show the success message
-    document.getElementById('application-form').scrollIntoView({ behavior: 'smooth' });
+    try {
+      // Create a FormData object to handle file uploads
+      const formDataObj = new FormData();
+      
+      // Add all form fields to the FormData object
+      Object.keys(formData).forEach(key => {
+        if (key === 'resume' && formData[key]) {
+          formDataObj.append(key, formData[key]);
+        } else if (key !== 'resume') {
+          formDataObj.append(key, formData[key]);
+        }
+      });
+      
+      // Add the job ID if a job is selected
+      if (activeJobId) {
+        formDataObj.append('jobId', activeJobId);
+      }
+      
+      // Send the application to the API using the careersService
+      await careersService.submitApplication(formDataObj);
+      
+      setFormStatus({
+        submitted: true,
+        success: true,
+        message: t('careers.form.success')
+      });
+  
+      // Reset form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        position: activeJobId ? jobs.find(job => job.id === activeJobId)?.title || '' : '',
+        experience: '',
+        education: '',
+        coverLetter: '',
+        resume: null
+      });
+      
+      // Scroll to the top of the form to show the success message
+      document.getElementById('application-form').scrollIntoView({ behavior: 'smooth' });
+    } catch (err) {
+      console.error('Error submitting application:', err);
+      setFormStatus({
+        submitted: true,
+        success: false,
+        message: t('careers.form.error')
+      });
+    }
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="pt-16">
+        <section className="relative bg-primary-700 text-white py-24 md:py-32">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-900 to-primary-700 opacity-90"></div>
+          <div className="absolute inset-0 bg-[url('/images/careers-hero-bg.jpg')] bg-cover bg-center mix-blend-overlay"></div>
+          <div className="container relative z-10">
+            <div className="max-w-3xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
+                {t('careers.hero.title')}
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 text-gray-100 animate-fadeIn">
+                {t('careers.hero.subtitle')}
+              </p>
+            </div>
+          </div>
+        </section>
+        <div className="flex justify-center items-center py-32">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-600"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-16">
@@ -368,71 +424,92 @@ const Careers = () => {
           <h2 className="section-title text-primary-700">{t('careers.openings.title')}</h2>
           <p className="section-subtitle">{t('careers.openings.subtitle')}</p>
           
-          <div className="mt-12 space-y-6">
-            {jobs.map(job => (
-              <div key={job.id} className="card hover:shadow-lg transition-shadow duration-300">
-                <div className="card-body">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <h3 className="text-xl font-bold text-primary-700">{job.title}</h3>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                          {job.department}
-                        </span>
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                          {job.location}
-                        </span>
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                          {job.type}
-                        </span>
-                      </div>
-                    </div>
-                    <button
-                      className={`mt-4 md:mt-0 btn ${activeJobId === job.id ? 'btn-primary' : 'btn-outline'}`}
-                      onClick={() => handleJobClick(job.id)}
-                    >
-                      {activeJobId === job.id ? t('careers.openings.hideDetails') : t('careers.openings.viewDetails')}
-                    </button>
-                  </div>
-                  
-                  {activeJobId === job.id && (
-                    <div className="mt-6 animate-fadeIn">
-                      <div className="p-6 bg-gray-50 rounded-lg">
-                        <p className="text-gray-700 mb-6">{job.description}</p>
-                        
-                        <div className="mb-6">
-                          <h4 className="text-lg font-semibold text-gray-900 mb-3">{t('careers.openings.responsibilities')}</h4>
-                          <ul className="space-y-2">
-                            {job.responsibilities.map((item, index) => (
-                              <li key={index} className="flex items-start">
-                                <svg className="w-5 h-5 text-primary-500 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span className="text-gray-700">{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        
-                        <div>
-                          <h4 className="text-lg font-semibold text-gray-900 mb-3">{t('careers.openings.requirements')}</h4>
-                          <ul className="space-y-2">
-                            {job.requirements.map((item, index) => (
-                              <li key={index} className="flex items-start">
-                                <svg className="w-5 h-5 text-primary-500 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span className="text-gray-700">{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+          {error && (
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded mb-8">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-red-700">{error}</p>
                 </div>
               </div>
-            ))}
+            </div>
+          )}
+          
+          <div className="mt-12 space-y-6">
+            {jobs.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-500">{t('careers.openings.noJobs')}</p>
+              </div>
+            ) : (
+              jobs.map(job => (
+                <div key={job.id} className="card hover:shadow-lg transition-shadow duration-300">
+                  <div className="card-body">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold text-primary-700">{job.title}</h3>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            {job.department}
+                          </span>
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            {job.location}
+                          </span>
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            {job.type}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        className={`mt-4 md:mt-0 btn ${activeJobId === job.id ? 'btn-primary' : 'btn-outline'}`}
+                        onClick={() => handleJobClick(job.id)}
+                      >
+                        {activeJobId === job.id ? t('careers.openings.hideDetails') : t('careers.openings.viewDetails')}
+                      </button>
+                    </div>
+                    
+                    {activeJobId === job.id && (
+                      <div className="mt-6 animate-fadeIn">
+                        <div className="p-6 bg-gray-50 rounded-lg">
+                          <p className="text-gray-700 mb-6">{job.description}</p>
+                          
+                          <div className="mb-6">
+                            <h4 className="text-lg font-semibold text-gray-900 mb-3">{t('careers.openings.responsibilities')}</h4>
+                            <ul className="space-y-2">
+                              {job.responsibilities && job.responsibilities.map((item, index) => (
+                                <li key={index} className="flex items-start">
+                                  <svg className="w-5 h-5 text-primary-500 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                  </svg>
+                                  <span className="text-gray-700">{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          
+                          <div>
+                            <h4 className="text-lg font-semibold text-gray-900 mb-3">{t('careers.openings.requirements')}</h4>
+                            <ul className="space-y-2">
+                              {job.requirements && job.requirements.map((item, index) => (
+                                <li key={index} className="flex items-start">
+                                  <svg className="w-5 h-5 text-primary-500 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                  </svg>
+                                  <span className="text-gray-700">{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>
