@@ -1,95 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { projectService } from '../services/api';
 
 const Projects = () => {
   const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('all');
+  const [projects, setProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   
-  // Sample projects data
-  const projects = [
-    {
-      id: 'project1',
-      title: 'Libyan National Oil Corporation Network Upgrade',
-      category: 'networking',
-      image: '/images/projects/project1.jpg',
-      client: 'Libyan National Oil Corporation',
-      description: 'Comprehensive upgrade of the network infrastructure for Libya\'s largest oil company, improving performance, security, and reliability.',
-      year: '2023'
-    },
-    {
-      id: 'project2',
-      title: 'Tripoli Medical Center IT Infrastructure',
-      category: 'it-infrastructure',
-      image: '/images/projects/project2.jpg',
-      client: 'Tripoli Medical Center',
-      description: 'Complete overhaul of the IT infrastructure for one of Libya\'s largest medical facilities, enabling better patient care and operational efficiency.',
-      year: '2022'
-    },
-    {
-      id: 'project3',
-      title: 'Bank of Commerce & Development Security System',
-      category: 'security-systems',
-      image: '/images/projects/project3.jpg',
-      client: 'Bank of Commerce & Development',
-      description: 'Implementation of a comprehensive security system for a major Libyan bank, including CCTV, access control, and alarm systems.',
-      year: '2023'
-    },
-    {
-      id: 'project4',
-      title: 'Ministry of Education Cloud Migration',
-      category: 'it-infrastructure',
-      image: '/images/projects/project4.jpg',
-      client: 'Libyan Ministry of Education',
-      description: 'Migration of the Ministry\'s core systems to a secure cloud infrastructure, improving accessibility and reducing operational costs.',
-      year: '2022'
-    },
-    {
-      id: 'project5',
-      title: 'Libyana Mobile Telecommunications System Upgrade',
-      category: 'telecommunications',
-      image: '/images/projects/project5.jpg',
-      client: 'Libyana Mobile',
-      description: 'Major upgrade of the telecommunications systems for one of Libya\'s largest mobile operators, enhancing service quality and coverage.',
-      year: '2021'
-    },
-    {
-      id: 'project6',
-      title: 'Al-Madar Unified Communications Platform',
-      category: 'telecommunications',
-      image: '/images/projects/project6.jpg',
-      client: 'Al-Madar Al-Jadid',
-      description: 'Implementation of a unified communications platform integrating voice, video, and messaging for a major telecommunications provider.',
-      year: '2022'
-    },
-    {
-      id: 'project7',
-      title: 'Libyan Airlines Reservation System',
-      category: 'software-development',
-      image: '/images/projects/project7.jpg',
-      client: 'Libyan Airlines',
-      description: 'Development of a custom reservation system for Libya\'s national airline, improving booking efficiency and customer experience.',
-      year: '2021'
-    },
-    {
-      id: 'project8',
-      title: 'Jumhouria Bank Digital Transformation',
-      category: 'consulting',
-      image: '/images/projects/project8.jpg',
-      client: 'Jumhouria Bank',
-      description: 'Comprehensive digital transformation consulting project for one of Libya\'s largest banks, including strategy development and implementation roadmap.',
-      year: '2023'
-    },
-    {
-      id: 'project9',
-      title: 'Zawia Oil Refinery Security Implementation',
-      category: 'security-systems',
-      image: '/images/projects/project9.jpg',
-      client: 'Zawia Oil Refinery',
-      description: 'Implementation of an integrated security system for a major oil refinery, including perimeter security, access control, and monitoring systems.',
-      year: '2022'
-    }
-  ];
+  // Fetch projects on component mount
+  useEffect(() => {
+    const fetchProjects = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const data = await projectService.getProjects();
+        setProjects(data);
+      } catch (err) {
+        console.error('Error fetching projects:', err);
+        setError('Failed to load projects. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchProjects();
+  }, []);
 
   // Filter categories
   const categories = [
@@ -106,6 +45,65 @@ const Projects = () => {
   const filteredProjects = activeFilter === 'all' 
     ? projects 
     : projects.filter(project => project.category === activeFilter);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="pt-16">
+        <section className="relative bg-primary-700 text-white py-24 md:py-32">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-900 to-primary-700 opacity-90"></div>
+          <div className="absolute inset-0 bg-[url('/images/projects-hero-bg.jpg')] bg-cover bg-center mix-blend-overlay"></div>
+          <div className="container relative z-10">
+            <div className="max-w-3xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
+                {t('projects.hero.title')}
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 text-gray-100 animate-fadeIn">
+                {t('projects.hero.subtitle')}
+              </p>
+            </div>
+          </div>
+        </section>
+        <div className="flex justify-center items-center py-32">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-600"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="pt-16">
+        <section className="relative bg-primary-700 text-white py-24 md:py-32">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-900 to-primary-700 opacity-90"></div>
+          <div className="absolute inset-0 bg-[url('/images/projects-hero-bg.jpg')] bg-cover bg-center mix-blend-overlay"></div>
+          <div className="container relative z-10">
+            <div className="max-w-3xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
+                {t('projects.hero.title')}
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 text-gray-100 animate-fadeIn">
+                {t('projects.hero.subtitle')}
+              </p>
+            </div>
+          </div>
+        </section>
+        <div className="flex justify-center items-center py-32">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">Error Loading Projects</h2>
+            <p className="text-gray-700">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-16">
@@ -169,7 +167,7 @@ const Projects = () => {
                     {categories.find(cat => cat.id === project.category)?.label || project.category}
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                    <div className="text-white text-sm font-medium">{project.year}</div>
+                    <div className="text-white text-sm font-medium">{new Date(project.date).getFullYear()}</div>
                   </div>
                 </div>
                 <div className="card-body">

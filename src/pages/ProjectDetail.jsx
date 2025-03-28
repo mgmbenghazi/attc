@@ -1,92 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { projectService } from '../services/api';
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
   const { t } = useTranslation();
   const [project, setProject] = useState(null);
+  const [relatedProjects, setRelatedProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   
-  // Sample projects data
-  const projectsData = [
-    {
-      id: 'project1',
-      title: 'Libyan National Oil Corporation Network Upgrade',
-      category: 'networking',
-      image: '/images/projects/project1.jpg',
-      client: 'Libyan National Oil Corporation',
-      description: 'Comprehensive upgrade of the network infrastructure for Libya\'s largest oil company, improving performance, security, and reliability.',
-      year: '2023',
-      duration: '6 months',
-      challenge: 'The Libyan National Oil Corporation (LNOC) was facing significant challenges with their aging network infrastructure. The existing network was struggling to handle the increasing data traffic, resulting in frequent downtime, security vulnerabilities, and limited scalability. As the backbone of Libya\'s oil industry, LNOC needed a robust, secure, and scalable network infrastructure to support their operations across multiple locations.',
-      solution: 'ElAmir designed and implemented a comprehensive network upgrade solution that addressed all of LNOC\'s requirements. We deployed a modern, high-performance network infrastructure using Cisco equipment, implemented advanced security measures, and established redundant connections to ensure high availability. The solution included a new core network, upgraded edge devices, enhanced wireless coverage, and a centralized network management system.',
-      results: 'The network upgrade resulted in a 99.9% uptime, a 70% increase in network performance, and significantly enhanced security posture. LNOC now has a scalable network infrastructure that can support their growing operations and adapt to future technological advancements. The centralized management system has reduced the time required for troubleshooting and maintenance by 60%, allowing the IT team to focus on strategic initiatives rather than day-to-day network issues.',
-      technologies: ['Cisco Networking Equipment', 'Cisco Meraki', 'Palo Alto Firewalls', 'Cisco ISE', 'NetFlow Analytics'],
-      images: [
-        '/images/projects/project1-detail1.jpg',
-        '/images/projects/project1-detail2.jpg',
-        '/images/projects/project1-detail3.jpg'
-      ],
-      testimonial: {
-        quote: "ElAmir delivered an exceptional network upgrade that has transformed our operations. Their team's expertise, professionalism, and attention to detail were evident throughout the project. We now have a reliable, high-performance network that supports our critical operations.",
-        author: "Ahmed Al-Mansouri",
-        position: "IT Director, Libyan National Oil Corporation"
-      }
-    },
-    {
-      id: 'project2',
-      title: 'Tripoli Medical Center IT Infrastructure',
-      category: 'it-infrastructure',
-      image: '/images/projects/project2.jpg',
-      client: 'Tripoli Medical Center',
-      description: 'Complete overhaul of the IT infrastructure for one of Libya\'s largest medical facilities, enabling better patient care and operational efficiency.',
-      year: '2022',
-      duration: '8 months',
-      challenge: 'Tripoli Medical Center (TMC), one of Libya\'s largest healthcare facilities, was operating with an outdated IT infrastructure that was hindering their ability to provide efficient patient care. The legacy systems were slow, unreliable, and lacked integration, resulting in data silos, inefficient workflows, and limited access to critical information. TMC needed a modern, integrated IT infrastructure to support their mission of providing high-quality healthcare services.',
-      solution: 'ElAmir implemented a comprehensive IT infrastructure solution that modernized TMC\'s entire technology ecosystem. We deployed a new server infrastructure using HPE hardware, implemented virtualization using VMware, established a robust storage solution with NetApp, and upgraded the network infrastructure. We also integrated the various hospital systems, including the Electronic Medical Record (EMR), Laboratory Information System (LIS), and Radiology Information System (RIS), to create a seamless flow of information.',
-      results: 'The new IT infrastructure has significantly improved TMC\'s operational efficiency and patient care capabilities. System performance has increased by 85%, downtime has been reduced by 95%, and data access times have improved by 70%. The integrated systems have eliminated data silos, enabling healthcare providers to access complete patient information in real-time. This has led to faster diagnoses, reduced medical errors, and improved patient outcomes. Additionally, the new infrastructure has enhanced data security and compliance with healthcare regulations.',
-      technologies: ['HPE Servers', 'VMware Virtualization', 'NetApp Storage', 'Cisco Networking', 'Microsoft Windows Server', 'Oracle Database'],
-      images: [
-        '/images/projects/project2-detail1.jpg',
-        '/images/projects/project2-detail2.jpg',
-        '/images/projects/project2-detail3.jpg'
-      ],
-      testimonial: {
-        quote: "The IT infrastructure implemented by ElAmir has revolutionized our operations at Tripoli Medical Center. We now have a reliable, high-performance technology foundation that enables us to provide better patient care. The ElAmir team's expertise and dedication were instrumental in the success of this complex project.",
-        author: "Dr. Mohammed Al-Barghathi",
-        position: "CEO, Tripoli Medical Center"
-      }
-    },
-    {
-      id: 'project3',
-      title: 'Bank of Commerce & Development Security System',
-      category: 'security-systems',
-      image: '/images/projects/project3.jpg',
-      client: 'Bank of Commerce & Development',
-      description: 'Implementation of a comprehensive security system for a major Libyan bank, including CCTV, access control, and alarm systems.',
-      year: '2023',
-      duration: '5 months',
-      challenge: 'The Bank of Commerce & Development, one of Libya\'s leading financial institutions, needed to enhance its physical security infrastructure to protect its assets, employees, and customers. The existing security systems were fragmented, outdated, and lacked central management, making it difficult to monitor and respond to security incidents effectively. The bank required a comprehensive, integrated security solution that would provide robust protection while complying with banking security regulations.',
-      solution: 'ElAmir designed and implemented an integrated security system that addressed all aspects of the bank\'s physical security needs. The solution included high-definition CCTV cameras with advanced analytics, a biometric access control system, intrusion detection systems, and a centralized security management platform. We deployed the solution across the bank\'s headquarters and 15 branch locations, ensuring consistent security coverage throughout their operations.',
-      results: 'The new security system has significantly enhanced the bank\'s security posture, providing comprehensive protection for their facilities, assets, and people. The high-definition cameras and advanced analytics have improved incident detection by 90%, while the centralized management platform has reduced response times by 70%. The biometric access control system has eliminated unauthorized access incidents and provided detailed audit trails for compliance purposes. The bank now has a scalable security infrastructure that can adapt to evolving threats and expand with their operations.',
-      technologies: ['Hikvision CCTV', 'Axis Network Cameras', 'HID Access Control', 'Honeywell Intrusion Detection', 'Milestone XProtect VMS'],
-      images: [
-        '/images/projects/project3-detail1.jpg',
-        '/images/projects/project3-detail2.jpg',
-        '/images/projects/project3-detail3.jpg'
-      ],
-      testimonial: {
-        quote: "ElAmir delivered a state-of-the-art security system that has transformed our security operations. Their team's expertise in banking security requirements and attention to detail ensured a solution that perfectly meets our needs. We now have complete confidence in our ability to protect our assets and provide a safe environment for our employees and customers.",
-        author: "Fatima El-Zawawi",
-        position: "Chief Security Officer, Bank of Commerce & Development"
-      }
-    }
-  ];
-
-  // Get project data based on projectId
+  // Fetch project data based on projectId
   useEffect(() => {
-    const foundProject = projectsData.find(p => p.id === projectId);
-    setProject(foundProject);
+    const fetchProjectData = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        // Fetch the project details
+        const projectData = await projectService.getProject(projectId);
+        setProject(projectData);
+        
+        if (projectData) {
+          // Fetch all projects to get related ones
+          const allProjects = await projectService.getProjects();
+          
+          // Filter related projects (same category, excluding current project)
+          const related = allProjects
+            .filter(p => p.id !== projectId && p.category === projectData.category)
+            .slice(0, 3);
+            
+          setRelatedProjects(related);
+        }
+      } catch (err) {
+        console.error('Error fetching project details:', err);
+        setError('Failed to load project details. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchProjectData();
   }, [projectId]);
 
   // Get category label
@@ -109,17 +64,55 @@ const ProjectDetail = () => {
     }
   };
 
-  // Related projects (excluding current project)
-  const relatedProjects = projectsData
-    .filter(p => p.id !== projectId && p.category === project?.category)
-    .slice(0, 3);
-
-  if (!project) {
+  // Loading state
+  if (isLoading) {
     return (
       <div className="pt-16 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
           <p className="mt-4 text-gray-600">Loading project details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="pt-16 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Error Loading Project</h2>
+          <p className="text-gray-700 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Project not found
+  if (!project) {
+    return (
+      <div className="pt-16 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <h2 className="text-2xl font-bold text-gray-700 mb-4">Project Not Found</h2>
+          <p className="text-gray-600 mb-6">The project you're looking for doesn't exist or has been removed.</p>
+          <Link 
+            to="/projects" 
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          >
+            View All Projects
+          </Link>
         </div>
       </div>
     );
@@ -146,11 +139,13 @@ const ProjectDetail = () => {
               <div className="bg-primary-800 bg-opacity-50 px-4 py-2 rounded-full">
                 <span className="font-semibold">{t('projects.projectDetails.client')}:</span> {project.client}
               </div>
+              {project.duration && (
+                <div className="bg-primary-800 bg-opacity-50 px-4 py-2 rounded-full">
+                  <span className="font-semibold">{t('projects.projectDetails.duration')}:</span> {project.duration}
+                </div>
+              )}
               <div className="bg-primary-800 bg-opacity-50 px-4 py-2 rounded-full">
-                <span className="font-semibold">{t('projects.projectDetails.duration')}:</span> {project.duration}
-              </div>
-              <div className="bg-primary-800 bg-opacity-50 px-4 py-2 rounded-full">
-                <span className="font-semibold">Year:</span> {project.year}
+                <span className="font-semibold">Year:</span> {new Date(project.date).getFullYear()}
               </div>
             </div>
           </div>
@@ -192,28 +187,34 @@ const ProjectDetail = () => {
               </div>
 
               {/* Challenge */}
-              <div className="mb-12 animate-fadeIn">
-                <h2 className="text-2xl font-bold text-primary-700 mb-4">{t('projects.projectDetails.challenge')}</h2>
-                <div className="bg-gray-50 p-6 rounded-lg">
-                  <p className="text-gray-700">{project.challenge}</p>
+              {project.challenge && (
+                <div className="mb-12 animate-fadeIn">
+                  <h2 className="text-2xl font-bold text-primary-700 mb-4">{t('projects.projectDetails.challenge')}</h2>
+                  <div className="bg-gray-50 p-6 rounded-lg">
+                    <p className="text-gray-700">{project.challenge}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Solution */}
-              <div className="mb-12 animate-fadeIn" style={{ animationDelay: '0.1s' }}>
-                <h2 className="text-2xl font-bold text-primary-700 mb-4">{t('projects.projectDetails.solution')}</h2>
-                <div className="bg-gray-50 p-6 rounded-lg">
-                  <p className="text-gray-700">{project.solution}</p>
+              {project.solution && (
+                <div className="mb-12 animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+                  <h2 className="text-2xl font-bold text-primary-700 mb-4">{t('projects.projectDetails.solution')}</h2>
+                  <div className="bg-gray-50 p-6 rounded-lg">
+                    <p className="text-gray-700">{project.solution}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Results */}
-              <div className="mb-12 animate-fadeIn" style={{ animationDelay: '0.2s' }}>
-                <h2 className="text-2xl font-bold text-primary-700 mb-4">{t('projects.projectDetails.results')}</h2>
-                <div className="bg-gray-50 p-6 rounded-lg">
-                  <p className="text-gray-700">{project.results}</p>
+              {project.results && (
+                <div className="mb-12 animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+                  <h2 className="text-2xl font-bold text-primary-700 mb-4">{t('projects.projectDetails.results')}</h2>
+                  <div className="bg-gray-50 p-6 rounded-lg">
+                    <p className="text-gray-700">{project.results}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Testimonial */}
               {project.testimonial && (
@@ -237,21 +238,23 @@ const ProjectDetail = () => {
             {/* Sidebar */}
             <div className="lg:col-span-1">
               {/* Technologies Used */}
-              <div className="card mb-8 animate-fadeIn" style={{ animationDelay: '0.1s' }}>
-                <div className="card-body">
-                  <h3 className="text-xl font-bold text-primary-700 mb-4">{t('projects.projectDetails.technologies')}</h3>
-                  <ul className="space-y-2">
-                    {project.technologies.map((tech, index) => (
-                      <li key={index} className="flex items-start">
-                        <svg className="w-5 h-5 text-primary-500 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span className="text-gray-700">{tech}</span>
-                      </li>
-                    ))}
-                  </ul>
+              {project.technologies && project.technologies.length > 0 && (
+                <div className="card mb-8 animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+                  <div className="card-body">
+                    <h3 className="text-xl font-bold text-primary-700 mb-4">{t('projects.projectDetails.technologies')}</h3>
+                    <ul className="space-y-2">
+                      {project.technologies.map((tech, index) => (
+                        <li key={index} className="flex items-start">
+                          <svg className="w-5 h-5 text-primary-500 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                          </svg>
+                          <span className="text-gray-700">{tech}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Services Provided */}
               <div className="card mb-8 animate-fadeIn" style={{ animationDelay: '0.2s' }}>
